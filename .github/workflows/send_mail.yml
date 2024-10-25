@@ -2,7 +2,7 @@ name: Enviar email programado
 
 on:
   schedule:
-    - cron: '* 20-22 * * 5' # De lunes a viernes a las 21:00 UTC
+    - cron: '* 19-23 * * 5' # De lunes a viernes a las 21:00 UTC
 
 jobs:
   send-email:
