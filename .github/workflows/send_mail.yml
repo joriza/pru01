@@ -1,8 +1,11 @@
 name: Enviar email programado
 
 on:
-  schedule:
-    - cron: '0 21 * * 5' # De lunes a viernes a las 21:00 UTC
+  push:
+    branches: [main]
+    
+  # schedule:
+   # - cron: '0 21 * * 5' # De lunes a viernes a las 21:00 UTC
 
 jobs:
   send-email:
