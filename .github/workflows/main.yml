@@ -1,0 +1,34 @@
+name: Enviar email programado 2 
+
+on:
+  schedule:
+    - cron: '0 21 * * 5' # De lunes a viernes a las 21:00 UTC
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get current date
+        id: date
+        run: echo "date=$(date '+%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+      
+      - name: Send email using SendGrid
+        env:
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          CURRENT_DATE: ${{ env.date }}
+        run: |
+          curl --request POST \
+          --url https://api.sendgrid.com/v3/mail/send \
+          --header "Authorization: Bearer $SENDGRID_API_KEY" \
+          --header 'Content-Type: application/json' \
+          --data '{
+            "personalizations": [{
+              "to": [{"email": "joriza@gmail.com"}],
+              "subject": "'"Email programado - $CURRENT_DATE"'"
+            }],
+            "from": {"email": "tu_correo@dominio.com"},
+            "content": [{
+              "type": "text/plain",
+              "value": "'"Este es un mensaje automático enviado el $CURRENT_DATE. Texto fijo del cuerpo."'
+            }]
+          }'
